@@ -7,32 +7,30 @@ help:
 	@echo "Available targets:"
 	@echo "  mock          - Generate all mocks using .mockery.yaml config"
 	@echo "  mock-clean    - Remove all generated mock files"
-	@echo "  mock-user     - Generate mock for UserRepository only"
-	@echo "  mock-io       - Generate mocks for Reader/Writer/ReadWriter interfaces"
 	@echo "  install-mockery - Install mockery tool (run once)"
 	@echo "  test          - Run tests to verify mocks work"
 	@echo "  help          - Show this help message"
 
-# Generate all mocks using explicit commands
-mock: mock-user mock-io
-	@echo "All mocks generated successfully"
+# Generate all mocks using the .mockery.yaml configuration
+mock:
+	@echo "Generating mocks for all interfaces..."
+	mockery --config=.mockery.yaml
 
 # Clean all generated mock files
 mock-clean:
 	@echo "Removing generated mock files..."
 	rm -rf mocks/*.go
 
-# Generate mock for UserRepository with expecters
+# Generate individual mocks
 mock-user:
 	@echo "Generating mock for UserRepository..."
-	mockery --name=UserRepository --with-expecter --structname=MockUserRepositoryWithExpecter
+	mockery --name=UserRepository --with-expecter --structname=MockUserRepositoryWithExpecter --output=mocks --outpkg=mocks
 
-# Generate mocks for I/O interfaces without expecters
 mock-io:
 	@echo "Generating mocks for I/O interfaces..."
-	mockery --name=Reader --structname=MockReader
-	mockery --name=Writer --structname=MockWriter
-	mockery --name=ReadWriter --structname=MockReadWriter
+	mockery --name=Reader --structname=MockReader --output=mocks --outpkg=mocks
+	mockery --name=Writer --structname=MockWriter --output=mocks --outpkg=mocks
+	mockery --name=ReadWriter --structname=MockReadWriter --output=mocks --outpkg=mocks
 
 # Install mockery (run this once)
 install-mockery:

@@ -1,9 +1,30 @@
 # Global configuration for mockery
-# Note: Per-interface configuration is not supported at the top level
-# Use explicit commands in Makefile or packages section for multi-package projects
-with-expecter: true
-output: mocks
+with-expecter: false  # Default to standard mocks
+filename: "{{.InterfaceNameSnake}}_mock.go"
 outpkg: mocks
-structname: "Mock{{.InterfaceName}}WithExpecter"
+structname: "Mock{{.InterfaceName}}"
 case: camel
 disable-version-string: true
+
+# Package-specific configuration for per-interface customization
+packages:
+  github.com/gcalvocr/go-testing:
+    config:
+      dir: "mocks/"
+    interfaces:
+      UserRepository:
+        config:
+          with-expecter: false
+          structname: "Mock{{.InterfaceName}}"
+      Reader:
+        config:
+          with-expecter: false
+          structname: "Mock{{.InterfaceName}}"
+      Writer:
+        config:
+          with-expecter: false
+          structname: "Mock{{.InterfaceName}}"
+      ReadWriter:
+        config:
+          with-expecter: true
+          structname: "Mock{{.InterfaceName}}WithExpecter"

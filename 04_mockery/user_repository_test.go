@@ -9,10 +9,11 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestServiceGetUserWithExpect(t *testing.T) {
-	mockRepo := new(mocks.MockUserRepositoryWithExpecter)
+func TestServiceGetUser_StandardMock(t *testing.T) {
+	mockRepo := new(mocks.MockUserRepository)
 
-	mockRepo.EXPECT().GetUser(mock.Anything).Return("Alice", nil).Run(func(id int) {
+	mockRepo.On("GetUser", mock.Anything).Return("Alice", nil).Run(func(args mock.Arguments) {
+		id := args.Int(0)
 		fmt.Println("GetUser called with ID:", id)
 	})
 

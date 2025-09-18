@@ -59,11 +59,10 @@ func TestDataProcessor_ProcessData_WithExpect(t *testing.T) {
 	input := []byte("hello world")
 	expectedOutput := []byte("HELLO WORLD")
 
-	// Set up expectations using standard mock (since ReadWriter uses standard mocks)
-	mockRW.On("Write", input).Return(len(input), nil)
-	mockRW.On("Read", mock.AnythingOfType("[]uint8")).Run(func(args mock.Arguments) {
-		buf := args.Get(0).([]byte)
-		copy(buf, expectedOutput)
+	// Set up expectations using expecter
+	mockRW.EXPECT().Write(input).Return(len(input), nil)
+	mockRW.EXPECT().Read(mock.AnythingOfType("[]uint8")).Run(func(p []byte) {
+		copy(p, expectedOutput)
 	}).Return(len(expectedOutput), nil)
 
 	processor := NewDataProcessor(mockRW)

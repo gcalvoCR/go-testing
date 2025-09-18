@@ -9,14 +9,6 @@ type MockReader struct {
 	mock.Mock
 }
 
-type MockReader_Expecter struct {
-	mock *mock.Mock
-}
-
-func (_m *MockReader) EXPECT() *MockReader_Expecter {
-	return &MockReader_Expecter{mock: &_m.Mock}
-}
-
 // Read provides a mock function with given fields: p
 func (_m *MockReader) Read(p []byte) (int, error) {
 	ret := _m.Called(p)
@@ -43,34 +35,6 @@ func (_m *MockReader) Read(p []byte) (int, error) {
 	}
 
 	return r0, r1
-}
-
-// MockReader_Read_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Read'
-type MockReader_Read_Call struct {
-	*mock.Call
-}
-
-// Read is a helper method to define mock.On call
-//   - p []byte
-func (_e *MockReader_Expecter) Read(p interface{}) *MockReader_Read_Call {
-	return &MockReader_Read_Call{Call: _e.mock.On("Read", p)}
-}
-
-func (_c *MockReader_Read_Call) Run(run func(p []byte)) *MockReader_Read_Call {
-	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].([]byte))
-	})
-	return _c
-}
-
-func (_c *MockReader_Read_Call) Return(n int, err error) *MockReader_Read_Call {
-	_c.Call.Return(n, err)
-	return _c
-}
-
-func (_c *MockReader_Read_Call) RunAndReturn(run func([]byte) (int, error)) *MockReader_Read_Call {
-	_c.Call.Return(run)
-	return _c
 }
 
 // NewMockReader creates a new instance of MockReader. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
