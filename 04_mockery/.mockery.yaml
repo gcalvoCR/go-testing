@@ -1,0 +1,9 @@
+# Global configuration for mockery
+# Note: Per-interface configuration is not supported at the top level
+# Use explicit commands in Makefile or packages section for multi-package projects
+with-expecter: true
+output: mocks
+outpkg: mocks
+structname: "Mock{{.InterfaceName}}WithExpecter"
+case: camel
+disable-version-string: true

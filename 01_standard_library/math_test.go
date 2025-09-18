@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestAdd(t *testing.T) {
 	tests := []struct {
@@ -98,4 +101,33 @@ func TestDivide(t *testing.T) {
 			}
 		})
 	}
+}
+
+func FuzzAdd(f *testing.F) {
+	// Seed with some values
+	f.Add(1, 2)
+	f.Add(-3, 7)
+	f.Add(0, 0)
+
+	// Define the fuzz target
+	f.Fuzz(func(t *testing.T, a, b int) {
+		fmt.Println(a, b)
+		got := Add(a, b)
+
+		// Basic property: commutativity → a+b == b+a
+		if got != Add(b, a) {
+			t.Errorf("Add not commutative: Add(%d,%d)=%d, Add(%d,%d)=%d",
+				a, b, got, b, a, Add(b, a))
+		}
+
+		// Identity property: a+0 == a
+		if Add(a, 0) != a {
+			t.Errorf("Add(%d,0) != %d", a, a)
+		}
+
+		// Overflow check (optional): prevent silent wraparound
+		if (a > 0 && b > 0 && got < 0) || (a < 0 && b < 0 && got > 0) {
+			t.Errorf("integer overflow: Add(%d,%d)=%d", a, b, got)
+		}
+	})
 }
