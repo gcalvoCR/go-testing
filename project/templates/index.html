@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank API Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+        .endpoint-section {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .endpoint-section h2 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .endpoint {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        .method.GET { background-color: #28a745; color: white; }
+        .method.POST { background-color: #007bff; color: white; }
+        .method.PUT { background-color: #ffc107; color: black; }
+        .method.DELETE { background-color: #dc3545; color: white; }
+        .endpoint-url {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .description {
+            margin: 10px 0;
+            color: #555;
+        }
+        .example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+        .example-label {
+            font-weight: bold;
+            color: #63b3ed;
+            margin-bottom: 5px;
+        }
+        .status {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.success { background-color: #d4edda; color: #155724; }
+        .status.error { background-color: #f8d7da; color: #721c24; }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .health-check {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .health-check h3 {
+            color: #2e7d32;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏦 Bank API</h1>
+        <p>REST API for bank operations with PostgreSQL & MongoDB support</p>
+    </div>
+
+    <div class="health-check">
+        <h3>🚀 Quick Start</h3>
+        <p><strong>Health Check:</strong> <code>GET /health</code></p>
+        <p><strong>Base URL:</strong> <code>http://localhost:8080</code></p>
+        <p><strong>Content-Type:</strong> <code>application/json</code></p>
+    </div>
+
+    <div class="endpoint-section">
+        <h2>📊 Health & Status</h2>
+        <div class="endpoint">
+            <span class="method GET">GET</span>
+            <span class="endpoint-url">/health</span>
+            <div class="description">Check API health and status</div>
+            <div class="example">
+<div class="example-label">Response:</div>
+{
+  "status": "OK"
+}
+            </div>
+        </div>
+    </div>
+
+    <div class="endpoint-section">
+        <h2>💳 Account Management</h2>
+
+        <div class="endpoint">
+            <span class="method GET">GET</span>
+            <span class="endpoint-url">/accounts</span>
+            <div class="description">Retrieve all accounts</div>
+            <div class="example">
+<div class="example-label">Response:</div>
+[
+  {
+    "id": "1",
+    "name": "John Doe",
+    "balance": 1500.50,
+    "currency": "USD",
+    "created_at": "2025-01-17T10:30:00Z",
+    "updated_at": "2025-01-17T12:15:00Z"
+  }
+]
+            </div>
+        </div>
+
+        <div class="endpoint">
+            <span class="method POST">POST</span>
+            <span class="endpoint-url">/accounts</span>
+            <div class="description">Create a new account</div>
+            <div class="example">
+<div class="example-label">Request:</div>
+{
+  "name": "Alice Johnson",
+  "balance": 1000.00,
+  "currency": "USD"
+}
+            </div>
+            <div class="example">
+<div class="example-label">Response:</div>
+{
+  "id": "2",
+  "name": "Alice Johnson",
+  "balance": 1000.00,
+  "currency": "USD",
+  "created_at": "2025-01-17T14:30:00Z",
+  "updated_at": "2025-01-17T14:30:00Z"
+}
+            </div>
+        </div>
+
+        <div class="endpoint">
+            <span class="method GET">GET</span>
+            <span class="endpoint-url">/accounts/{id}</span>
+            <div class="description">Get account by ID</div>
+            <div class="example">
+<div class="example-label">Response:</div>
+{
+  "id": "1",
+  "name": "John Doe",
+  "balance": 1500.50,
+  "currency": "USD",
+  "created_at": "2025-01-17T10:30:00Z",
+  "updated_at": "2025-01-17T12:15:00Z"
+}
+            </div>
+        </div>
+    </div>
+
+    <div class="endpoint-section">
+        <h2>💸 Transaction Management</h2>
+
+        <div class="endpoint">
+            <span class="method GET">GET</span>
+            <span class="endpoint-url">/accounts/{account_id}/transactions</span>
+            <div class="description">Get all transactions for an account</div>
+            <div class="example">
+<div class="example-label">Response:</div>
+[
+  {
+    "id": "1",
+    "account_id": "1",
+    "amount": 500.00,
+    "type": "deposit",
+    "created_at": "2025-01-17T10:35:00Z",
+    "updated_at": "2025-01-17T10:35:00Z"
+  },
+  {
+    "id": "2",
+    "account_id": "1",
+    "amount": 100.00,
+    "type": "withdrawal",
+    "created_at": "2025-01-17T11:00:00Z",
+    "updated_at": "2025-01-17T11:00:00Z"
+  }
+]
+            </div>
+        </div>
+
+        <div class="endpoint">
+            <span class="method POST">POST</span>
+            <span class="endpoint-url">/transactions</span>
+            <div class="description">Create a new transaction (deposit/withdrawal)</div>
+            <div class="example">
+<div class="example-label">Deposit Request:</div>
+{
+  "account_id": "1",
+  "amount": 250.00,
+  "type": "deposit"
+}
+            </div>
+            <div class="example">
+<div class="example-label">Withdrawal Request:</div>
+{
+  "account_id": "1",
+  "amount": 100.00,
+  "type": "withdrawal"
+}
+            </div>
+            <div class="example">
+<div class="example-label">Response:</div>
+{
+  "id": "3",
+  "account_id": "1",
+  "amount": 250.00,
+  "type": "deposit",
+  "created_at": "2025-01-17T15:45:00Z",
+  "updated_at": "2025-01-17T15:45:00Z"
+}
+            </div>
+        </div>
+    </div>
+
+    <div class="endpoint-section">
+        <h2>💱 Exchange Rates</h2>
+
+        <div class="endpoint">
+            <span class="method GET">GET</span>
+            <span class="endpoint-url">/exchange?from=USD&to=EUR</span>
+            <div class="description">Get exchange rate between two currencies</div>
+            <div class="example">
+<div class="example-label">Response:</div>
+{
+  "rate": 0.85
+}
+            </div>
+            <div class="example">
+<div class="example-label">Supported currencies:</div>
+USD, EUR, GBP, JPY, CAD, AUD, CHF, CNY, SEK, NZD, etc.
+            </div>
+        </div>
+    </div>
+
+    <div class="endpoint-section">
+        <h2>📋 Error Responses</h2>
+
+        <div class="endpoint">
+            <div class="description">Common error response format:</div>
+            <div class="example">
+<div class="example-label">400 Bad Request:</div>
+{
+  "error": "Invalid JSON format"
+}
+            </div>
+            <div class="example">
+<div class="example-label">404 Not Found:</div>
+{
+  "error": "Account not found"
+}
+            </div>
+            <div class="example">
+<div class="example-label">500 Internal Server Error:</div>
+{
+  "error": "Database not available"
+}
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <h3>🛠️ Development Commands</h3>
+        <p>
+            <strong>PostgreSQL:</strong> <code>make up</code> |
+            <strong>MongoDB:</strong> <code>make up-mongo</code> |
+            <strong>Tests:</strong> <code>make test</code> |
+            <strong>Logs:</strong> <code>make logs</code>
+        </p>
+        <p><em>Built with Go, PostgreSQL, MongoDB, and Docker</em></p>
+    </div>
+</body>
+</html>
