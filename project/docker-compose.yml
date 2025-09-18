@@ -1,0 +1,59 @@
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: bankdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d bankdb"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+      start_period: 10s
+    profiles:
+      - postgres
+
+  mongodb:
+    image: mongo:6.0
+    environment:
+      MONGO_INITDB_DATABASE: bankdb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+      start_period: 10s
+    profiles:
+      - mongodb
+
+  app:
+    build: .
+    environment:
+      - DB_TYPE=${DB_TYPE}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=bankdb
+      - MONGODB_URI=mongodb://mongodb:27017
+      - LOG_LEVEL=info
+      - PORT=8080
+    ports:
+      - "8080:8080"
+    profiles:
+      - postgres
+      - mongodb
+
+
+volumes:
+  postgres_data:
+  mongodb_data:
