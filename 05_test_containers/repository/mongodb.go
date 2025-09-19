@@ -6,8 +6,8 @@ import (
 	"testcontainers-mongo-demo/config"
 	"testcontainers-mongo-demo/models"
 
+	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -47,26 +47,19 @@ func (r *MongoUserRepository) Create(ctx context.Context, user *models.User) err
 	coll := r.client.Database(r.database).Collection(r.collection)
 
 	// Generate ID if not set
-	if user.ID.IsZero() {
-		user.ID = primitive.NewObjectID()
+	if user.ID == "" {
+		user.ID = uuid.New().String()
 	}
 
-	result, err := coll.InsertOne(ctx, user)
+	_, err := coll.InsertOne(ctx, user)
 	if err != nil {
 		return err
-	}
-
-	// Ensure the ID is set from the result if needed
-	if result.InsertedID != nil {
-		if oid, ok := result.InsertedID.(primitive.ObjectID); ok {
-			user.ID = oid
-		}
 	}
 
 	return nil
 }
 
-func (r *MongoUserRepository) GetByID(ctx context.Context, id primitive.ObjectID) (*models.User, error) {
+func (r *MongoUserRepository) GetByID(ctx context.Context, id string) (*models.User, error) {
 	coll := r.client.Database(r.database).Collection(r.collection)
 	var user models.User
 	err := coll.FindOne(ctx, bson.M{"_id": id}).Decode(&user)
@@ -82,7 +75,7 @@ func (r *MongoUserRepository) Update(ctx context.Context, user *models.User) err
 	return err
 }
 
-func (r *MongoUserRepository) Delete(ctx context.Context, id primitive.ObjectID) error {
+func (r *MongoUserRepository) Delete(ctx context.Context, id string) error {
 	coll := r.client.Database(r.database).Collection(r.collection)
 	_, err := coll.DeleteOne(ctx, bson.M{"_id": id})
 	return err

@@ -25,7 +25,7 @@ func Test_MongoUserRepository(t *testing.T) {
 	}
 	err = repo.Create(ctx, user)
 	require.NoError(t, err)
-	require.False(t, user.ID.IsZero(), "User ID should be set")
+	require.NotEmpty(t, user.ID, "User ID should be set")
 
 	// Test GetByID
 	retrieved, err := repo.GetByID(ctx, user.ID)

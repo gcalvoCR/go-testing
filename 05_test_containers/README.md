@@ -390,7 +390,7 @@ require.Len(t, users, 1)
 **2. Validate Important Behaviors**
 ```go
 // Test that ID is generated
-require.False(t, user.ID.IsZero())
+require.NotEmpty(t, user.ID)
 
 // Test data integrity
 retrieved, err := repo.GetByID(ctx, user.ID)
